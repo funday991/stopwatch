@@ -37,6 +37,7 @@ class ViewController: UIViewController {
         stopwatch = Stopwatch(state: .paused, currentCentiseconds: 0, callbackOnFire: updateTimeLabel)
     }
     
+    
     @IBAction func toggleButtonTapped(_ sender: UIButton) {
         stopwatch?.toggle()
         
