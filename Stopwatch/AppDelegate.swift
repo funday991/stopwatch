@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             forKey: "timeAfterEnteringBackground"
         )
         
-        UserDefaults.standard.set(stopwatch.centisecondsCounter, forKey: "suspendedValue")
+        UserDefaults.standard.set(stopwatch.centisecondsCounter, forKey: "suspendedStopwatchValue")
         UserDefaults.standard.set(stopwatchIsRunning, forKey: "stopwatchIsRunning")
     }
 

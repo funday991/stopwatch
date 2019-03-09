@@ -25,11 +25,11 @@ class ViewController: UIViewController {
         }
         
         let backgroundStopwatchValue = UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
-        let suspendedValue = UserDefaults.standard.integer(forKey: "suspendedValue")
+        let suspendedStopwatchValue = UserDefaults.standard.integer(forKey: "suspendedStopwatchValue")
         
         let stopwatchIsRunning = UserDefaults.standard.bool(forKey: "stopwatchIsRunning")
         
-        let currentCentiseconds = suspendedValue + backgroundStopwatchValue
+        let currentCentiseconds = suspendedStopwatchValue + backgroundStopwatchValue
     
         stopwatch = Stopwatch(state: .paused, currentCentiseconds: currentCentiseconds, callbackOnFire: updateTimeLabel)
         updateTimeLabel()
