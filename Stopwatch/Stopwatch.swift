@@ -67,7 +67,9 @@ class Stopwatch {
     
     
     func pause() {
-        timer?.invalidate()
+        guard let timer = timer else { return }
+        
+        timer.invalidate()
     }
     
     

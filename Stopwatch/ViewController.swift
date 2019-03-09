@@ -27,8 +27,10 @@ class ViewController: UIViewController {
             object: nil,
             queue: nil
         ) { (notification) in
-            if self.stopwatch?.state == .running {
-                self.stopwatch?.centisecondsCounter += UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
+            guard let stopwatch = self.stopwatch else { return }
+            
+            if stopwatch.state == .running {
+                stopwatch.centisecondsCounter += UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
             }
         }
         
@@ -39,9 +41,11 @@ class ViewController: UIViewController {
     
     
     @IBAction func toggleButtonTapped(_ sender: UIButton) {
-        stopwatch?.toggle()
+        guard let stopwatch = stopwatch else { return }
         
-        switch stopwatch!.state {
+        stopwatch.toggle()
+        
+        switch stopwatch.state {
         case .running:
             toggleButton.setTitleColor(.red, for: .normal)
             toggleButton.setTitle("Pause", for: .normal)
@@ -55,12 +59,16 @@ class ViewController: UIViewController {
     
     
     @IBAction func resetButtonTapped(_ sender: UIButton) {
-        stopwatch?.reset()
+        guard let stopwatch = stopwatch else { return }
+
+        stopwatch.reset()
     }
     
     
     func updateTimeLabel() {
-        timeLabel.text = stopwatch?.formattedTime
+        guard let stopwatch = stopwatch else { return }
+
+        timeLabel.text = stopwatch.formattedTime
     }
     
 }
