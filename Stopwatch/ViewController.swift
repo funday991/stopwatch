@@ -1,11 +1,3 @@
-//
-//  ViewController.swift
-//  Stopwatch
-//
-//  Created by Yury on 05/03/2019.
-//  Copyright © 2019 napoleon. All rights reserved.
-//
-
 import UIKit
 
 
@@ -29,14 +21,24 @@ class ViewController: UIViewController {
         ) { (notification) in
             guard let stopwatch = self.stopwatch else { return }
             
-            if stopwatch.state == .running {
-                stopwatch.centisecondsCounter += UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
-            }
+            stopwatch.centisecondsCounter += UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
+        }
+        
+        let backgroundStopwatchValue = UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
+        let suspendedValue = UserDefaults.standard.integer(forKey: "suspendedValue")
+        
+        let stopwatchIsRunning = UserDefaults.standard.bool(forKey: "stopwatchIsRunning")
+        
+        let currentCentiseconds = suspendedValue + backgroundStopwatchValue
+    
+        stopwatch = Stopwatch(state: .paused, currentCentiseconds: currentCentiseconds, callbackOnFire: updateTimeLabel)
+        updateTimeLabel()
+        
+        if stopwatchIsRunning {
+            toggleButtonTapped(toggleButton)
         }
         
         timeLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 40, weight: UIFont.Weight.thin)
-        
-        stopwatch = Stopwatch(state: .paused, currentCentiseconds: 0, callbackOnFire: updateTimeLabel)
     }
     
     

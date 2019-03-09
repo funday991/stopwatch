@@ -1,11 +1,3 @@
-//
-//  Stopwatch.swift
-//  Stopwatch
-//
-//  Created by Yury on 06/03/2019.
-//  Copyright © 2019 napoleon. All rights reserved.
-//
-
 import Foundation
 
 
@@ -42,7 +34,7 @@ class Stopwatch {
             state = .running
             run()
         case .running:
-            state = .paused
+            state = .paused            
             pause()
         }
     }
