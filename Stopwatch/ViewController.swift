@@ -8,7 +8,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak private var timeLabel: UILabel! {
         didSet {
-            timeLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 40, weight: UIFont.Weight.thin)
+            timeLabel.font = UIFont.monospacedDigitSystemFont(ofSize: timeLabel.font.pointSize, weight: UIFont.Weight.thin)
         }
     }
     
