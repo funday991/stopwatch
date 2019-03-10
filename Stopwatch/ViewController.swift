@@ -53,7 +53,7 @@ class ViewController: UIViewController {
     }
     
     
-    func updateTimeLabel() {
+    private func updateTimeLabel() {
         guard let stopwatch = stopwatch else { return }
 
         timeLabel.text = stopwatch.formattedTime
