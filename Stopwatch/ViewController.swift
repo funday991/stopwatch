@@ -25,14 +25,18 @@ class ViewController: UIViewController {
     
     private func setForegroundObserver() {
         NotificationCenter.default.addObserver(
-            forName: UIApplication.willEnterForegroundNotification,
-            object: nil,
-            queue: nil
-        ) { (notification) in
-            guard let stopwatch = self.stopwatch else { return }
-            
-            stopwatch.centisecondsCounter += UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
-        }
+            self,
+            selector: #selector(foregroundEntered),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
+    }
+    
+    
+    @objc private func foregroundEntered() {
+        guard let stopwatch = stopwatch else { return }
+        
+        stopwatch.centisecondsCounter += UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
     }
     
     
