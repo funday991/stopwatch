@@ -7,7 +7,7 @@ class Stopwatch {
     
     var state: State
     var centisecondsCounter: Int
-    var updateTimeLabelCallback: () -> Void
+    private var updateTimeLabelCallback: () -> Void
     
     var formattedTime: String {
         let centiseconds = centisecondsCounter % 100
@@ -18,7 +18,7 @@ class Stopwatch {
         return String(format: "%0.2d:%0.2d:%0.2d.%0.2d", hours, minutes, seconds, centiseconds)
     }
     
-    var timer = Timer()
+    private var timer = Timer()
     
     
     init(state: State, currentCentiseconds: Int, callbackOnFire: @escaping () -> Void) {
