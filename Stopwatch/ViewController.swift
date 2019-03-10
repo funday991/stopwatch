@@ -3,17 +3,27 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var toggleButton: UIButton!
-    @IBOutlet weak var resetButton: UIButton!
+    @IBOutlet weak private var toggleButton: UIButton!
+    @IBOutlet weak private var resetButton: UIButton!
     
-    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak private var timeLabel: UILabel! {
+        didSet {
+            timeLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 40, weight: UIFont.Weight.thin)
+        }
+    }
     
     var stopwatch: Stopwatch?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
+        setForegroundObserver()
+        initializeStopwatch()
+    }
+    
+    
+    private func setForegroundObserver() {
         NotificationCenter.default.addObserver(
             forName: UIApplication.willEnterForegroundNotification,
             object: nil,
@@ -23,26 +33,34 @@ class ViewController: UIViewController {
             
             stopwatch.centisecondsCounter += UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
         }
-        
+    }
+    
+    
+    private func initializeStopwatch() {
         let backgroundStopwatchValue = UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
         let suspendedStopwatchValue = UserDefaults.standard.integer(forKey: "suspendedStopwatchValue")
         
         let stopwatchIsRunning = UserDefaults.standard.bool(forKey: "stopwatchIsRunning")
         
         let currentCentiseconds = suspendedStopwatchValue + backgroundStopwatchValue
-    
+        
         stopwatch = Stopwatch(state: .paused, currentCentiseconds: currentCentiseconds, callbackOnFire: updateTimeLabel)
         updateTimeLabel()
         
         if stopwatchIsRunning {
             toggleButtonTapped(toggleButton)
         }
-        
-        timeLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 40, weight: UIFont.Weight.thin)
     }
     
     
-    @IBAction func toggleButtonTapped(_ sender: UIButton) {
+    func updateTimeLabel() {
+        guard let stopwatch = stopwatch else { return }
+
+        timeLabel.text = stopwatch.formattedTime
+    }
+    
+    
+    @IBAction private func toggleButtonTapped(_ sender: UIButton) {
         guard let stopwatch = stopwatch else { return }
         
         stopwatch.toggle()
@@ -60,17 +78,10 @@ class ViewController: UIViewController {
     }
     
     
-    @IBAction func resetButtonTapped(_ sender: UIButton) {
+    @IBAction private func resetButtonTapped(_ sender: UIButton) {
         guard let stopwatch = stopwatch else { return }
-
+        
         stopwatch.reset()
-    }
-    
-    
-    func updateTimeLabel() {
-        guard let stopwatch = stopwatch else { return }
-
-        timeLabel.text = stopwatch.formattedTime
     }
     
 }

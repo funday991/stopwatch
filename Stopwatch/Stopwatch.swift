@@ -18,7 +18,7 @@ class Stopwatch {
         return String(format: "%0.2d:%0.2d:%0.2d.%0.2d", hours, minutes, seconds, centiseconds)
     }
     
-    var timer: Timer?
+    var timer = Timer()
     
     
     init(state: State, currentCentiseconds: Int, callbackOnFire: @escaping () -> Void) {
@@ -29,18 +29,13 @@ class Stopwatch {
     
     
     func toggle() {
-        switch state {
-        case .paused:
-            state = .running
-            run()
-        case .running:
-            state = .paused            
-            pause()
-        }
+        timer.isValid ? pause() : run()
     }
     
     
-    func run() {
+    private func run() {
+        state = .running
+
         timer = Timer.scheduledTimer(
             timeInterval: 0.01,
             target: self,
@@ -51,15 +46,15 @@ class Stopwatch {
     }
     
     
-    @objc func updateTime() {
+    @objc private func updateTime() {
         centisecondsCounter += 1
         
         updateTimeLabelCallback()
     }
     
     
-    func pause() {
-        guard let timer = timer else { return }
+    private func pause() {
+        state = .paused
         
         timer.invalidate()
     }
@@ -67,7 +62,7 @@ class Stopwatch {
     
     func reset() {
         centisecondsCounter = 0
-        
+    
         updateTimeLabelCallback()
     }
     
