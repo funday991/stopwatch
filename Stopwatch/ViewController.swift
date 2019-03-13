@@ -3,17 +3,26 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    // MARK: - View controller IBOutlets
+    
     @IBOutlet weak private var toggleButton: UIButton!
     @IBOutlet weak private var resetButton: UIButton!
     
     @IBOutlet weak private var timeLabel: UILabel! {
+        
+        // Prevents time label from "shaking" on change by using monospaced font
         didSet {
             timeLabel.font = UIFont.monospacedDigitSystemFont(ofSize: timeLabel.font.pointSize, weight: UIFont.Weight.thin)
         }
     }
     
-    var stopwatch: Stopwatch?
     
+    // MARK: -  View controller constants and variables
+    
+    var stopwatch: Stopwatch!
+    
+    
+    // MARK: - View controller lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,8 +31,11 @@ class ViewController: UIViewController {
         initializeStopwatch()
     }
     
+    // MARK: - Private accessory functions
     
     private func setForegroundObserver() {
+        
+        // A listener observing the scene entring foreground after being dismissed needed for culculating a current stopwatch value
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(foregroundEntered),
@@ -32,13 +44,9 @@ class ViewController: UIViewController {
         )
     }
     
-    
     @objc private func foregroundEntered() {
-        guard let stopwatch = stopwatch else { return }
-        
         stopwatch.centisecondsCounter += UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
     }
-    
     
     private func initializeStopwatch() {
         let backgroundStopwatchValue = UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
@@ -49,6 +57,7 @@ class ViewController: UIViewController {
         let currentCentiseconds = suspendedStopwatchValue + backgroundStopwatchValue
         
         stopwatch = Stopwatch(state: .paused, currentCentiseconds: currentCentiseconds, callbackOnFire: updateTimeLabel)
+        
         updateTimeLabel()
         
         if stopwatchIsRunning {
@@ -56,19 +65,11 @@ class ViewController: UIViewController {
         }
     }
     
-    
     private func updateTimeLabel() {
-        guard let stopwatch = stopwatch else { return }
-
         timeLabel.text = stopwatch.formattedTime
     }
     
-    
-    @IBAction private func toggleButtonTapped(_ sender: UIButton) {
-        guard let stopwatch = stopwatch else { return }
-        
-        stopwatch.toggle()
-        
+    private func updateUI() {
         switch stopwatch.state {
         case .running:
             toggleButton.setTitleColor(.red, for: .normal)
@@ -82,9 +83,14 @@ class ViewController: UIViewController {
     }
     
     
+    // MARK: - View controller IBActions
+    
+    @IBAction private func toggleButtonTapped(_ sender: UIButton) {
+        stopwatch.toggle()
+        updateUI()
+    }
+    
     @IBAction private func resetButtonTapped(_ sender: UIButton) {
-        guard let stopwatch = stopwatch else { return }
-        
         stopwatch.reset()
     }
     

@@ -4,11 +4,13 @@ import Foundation
 class Stopwatch {
     
     enum State { case paused, running }
+
+    
+    // MARK: - Stopwatch public constants and variables
     
     var state: State
     var centisecondsCounter: Int
-    private var updateTimeLabelCallback: () -> Void
-    
+
     var formattedTime: String {
         let centiseconds = centisecondsCounter % 100
         let seconds = centisecondsCounter / 100 % 60
@@ -18,8 +20,15 @@ class Stopwatch {
         return String(format: "%0.2d:%0.2d:%0.2d.%0.2d", hours, minutes, seconds, centiseconds)
     }
     
+    
+    // MARK: - Stopwatch private constants and variables
+    
+    private var updateTimeLabelCallback: () -> Void
+    
     private var timer = Timer()
     
+    
+    // MARK: - Instance initializer
     
     init(state: State, currentCentiseconds: Int, callbackOnFire: @escaping () -> Void) {
         self.state = state
@@ -28,10 +37,20 @@ class Stopwatch {
     }
     
     
+    // MARK: - Public stopwatch methods
+    
     func toggle() {
         timer.isValid ? pause() : run()
     }
     
+    func reset() {
+        centisecondsCounter = 0
+        
+        updateTimeLabelCallback()
+    }
+    
+    
+    // MARK: - Private accessory stopwatch functions
     
     private func run() {
         state = .running
@@ -45,25 +64,16 @@ class Stopwatch {
         )
     }
     
-    
     @objc private func updateTime() {
         centisecondsCounter += 1
         
         updateTimeLabelCallback()
     }
     
-    
     private func pause() {
         state = .paused
         
         timer.invalidate()
-    }
-    
-    
-    func reset() {
-        centisecondsCounter = 0
-    
-        updateTimeLabelCallback()
     }
     
 }
