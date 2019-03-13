@@ -3,10 +3,12 @@ import Foundation
 
 class Stopwatch {
     
+    // MARK: - Auxiliary structures
+    
     enum State { case paused, running }
 
     
-    // MARK: - Stopwatch public constants and variables
+    // MARK: - Internal properties
     
     var state: State
     var centisecondsCounter: Int
@@ -21,7 +23,7 @@ class Stopwatch {
     }
     
     
-    // MARK: - Stopwatch private constants and variables
+    // MARK: - Private properties
     
     private var updateTimeLabelCallback: () -> Void
     
@@ -37,7 +39,7 @@ class Stopwatch {
     }
     
     
-    // MARK: - Public stopwatch methods
+    // MARK: - Internal methods
     
     func toggle() {
         timer.isValid ? pause() : run()
@@ -50,7 +52,7 @@ class Stopwatch {
     }
     
     
-    // MARK: - Private accessory stopwatch functions
+    // MARK: - Private accessory methods
     
     private func run() {
         state = .running

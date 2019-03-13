@@ -7,7 +7,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     
-    // MARK: - App lifecycle
+    // MARK: - Lifecycle
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         calculateBackgroundTime()
@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    // MARK: - Private accessory funcitons
+    // MARK: - Private accessory methods
     
     private func saveSuspendedTime() {
         guard

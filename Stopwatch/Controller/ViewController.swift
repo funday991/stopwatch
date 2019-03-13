@@ -3,7 +3,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    // MARK: - View controller IBOutlets
+    // MARK: - IBOutlets
     
     @IBOutlet weak private var toggleButton: UIButton!
     @IBOutlet weak private var resetButton: UIButton!
@@ -17,12 +17,12 @@ class ViewController: UIViewController {
     }
     
     
-    // MARK: -  View controller constants and variables
+    // MARK: -  Internal properties
     
     var stopwatch: Stopwatch!
     
     
-    // MARK: - View controller lifecycle
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +31,7 @@ class ViewController: UIViewController {
         initializeStopwatch()
     }
     
-    // MARK: - Private accessory functions
+    // MARK: - Private accessory methods
     
     private func setForegroundObserver() {
         
@@ -83,7 +83,7 @@ class ViewController: UIViewController {
     }
     
     
-    // MARK: - View controller IBActions
+    // MARK: - IBActions
     
     @IBAction private func toggleButtonTapped(_ sender: UIButton) {
         stopwatch.toggle()
