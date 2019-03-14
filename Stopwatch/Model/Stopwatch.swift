@@ -19,7 +19,7 @@ class Stopwatch {
         let minutes = centisecondsCounter / 6000 % 60
         let hours = centisecondsCounter / 360000
         
-        return String(format: "%0.2d:%0.2d:%0.2d.%0.2d", hours, minutes, seconds, centiseconds)
+        return String(format: "%.2d:%.2d:%.2d.%.2d", hours, minutes, seconds, centiseconds)
     }
     
     
