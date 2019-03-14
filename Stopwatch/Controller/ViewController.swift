@@ -79,17 +79,19 @@ class ViewController: UIViewController {
         timeLabel.text = stopwatch.formattedTime
     }
     
-    private func updateUI() {
+    private func updateButtons() {
         switch stopwatch.state {
         case .running:
-            toggleButton.setTitleColor(.red, for: .normal)
-            toggleButton.setTitle("Pause", for: .normal)
-            resetButton.isEnabled = false
+            setNewState(withToggleColor: .red, withToggleTitle: "Pause", withResetEnabled: false)
         case .paused:
-            toggleButton.setTitleColor(.green, for: .normal)
-            toggleButton.setTitle("Run", for: .normal)
-            resetButton.isEnabled = true
+            setNewState(withToggleColor: .green, withToggleTitle: "Run", withResetEnabled: true)
         }
+    }
+    
+    private func setNewState(withToggleColor toggleColor: UIColor, withToggleTitle toggleTitle: String, withResetEnabled resetEnabled: Bool) {
+        toggleButton.setTitleColor(toggleColor, for: .normal)
+        toggleButton.setTitle(toggleTitle, for: .normal)
+        resetButton.isEnabled = resetEnabled
     }
     
     
@@ -97,7 +99,7 @@ class ViewController: UIViewController {
     
     @IBAction private func toggleButtonTapped(_ sender: UIButton) {
         stopwatch.toggle()
-        updateUI()
+        updateButtons()
     }
     
     @IBAction private func resetButtonTapped(_ sender: UIButton) {
