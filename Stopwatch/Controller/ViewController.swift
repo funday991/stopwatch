@@ -17,9 +17,13 @@ class ViewController: UIViewController {
     }
     
     
-    // MARK: -  Internal properties
+    // MARK: -  Internal readonly properties
     
-    var stopwatch: Stopwatch!
+    private(set) var stopwatch: Stopwatch! {
+        didSet {
+            updateTimeLabel()
+        }
+    }
     
     
     // MARK: - Lifecycle
@@ -45,25 +49,31 @@ class ViewController: UIViewController {
     }
     
     @objc private func foregroundEntered() {
-        stopwatch.centisecondsCounter += UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
+        stopwatch.restore(backgoundTime: UserDefaults.standard.integer(forKey: "backgroundStopwatchValue"))
     }
     
+    
     private func initializeStopwatch() {
+        stopwatch = Stopwatch(state: .paused, currentCentiseconds: calculateBackgroundTime(), callbackOnFire: updateTimeLabel)
+        
+        checkStopwatchBackgoundState()
+    }
+    
+    private func calculateBackgroundTime() -> Int {
         let backgroundStopwatchValue = UserDefaults.standard.integer(forKey: "backgroundStopwatchValue")
         let suspendedStopwatchValue = UserDefaults.standard.integer(forKey: "suspendedStopwatchValue")
         
+        return suspendedStopwatchValue + backgroundStopwatchValue
+    }
+    
+    private func checkStopwatchBackgoundState() {
         let stopwatchIsRunning = UserDefaults.standard.bool(forKey: "stopwatchIsRunning")
-        
-        let currentCentiseconds = suspendedStopwatchValue + backgroundStopwatchValue
-        
-        stopwatch = Stopwatch(state: .paused, currentCentiseconds: currentCentiseconds, callbackOnFire: updateTimeLabel)
-        
-        updateTimeLabel()
         
         if stopwatchIsRunning {
             toggleButtonTapped(toggleButton)
         }
     }
+
     
     private func updateTimeLabel() {
         timeLabel.text = stopwatch.formattedTime

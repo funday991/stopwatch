@@ -5,13 +5,13 @@ class Stopwatch {
     
     // MARK: - Auxiliary structures
     
-    enum State { case paused, running }
+    enum StopwatchState { case paused, running }
 
     
-    // MARK: - Internal properties
+    // MARK: - Internal readonly properties
     
-    var state: State
-    var centisecondsCounter: Int
+    private(set) var state: StopwatchState
+    private(set) var centisecondsCounter: Int
 
     var formattedTime: String {
         let centiseconds = centisecondsCounter % 100
@@ -32,7 +32,7 @@ class Stopwatch {
     
     // MARK: - Instance initializer
     
-    init(state: State, currentCentiseconds: Int, callbackOnFire: @escaping () -> Void) {
+    init(state: StopwatchState, currentCentiseconds: Int, callbackOnFire: @escaping () -> Void) {
         self.state = state
         self.centisecondsCounter = currentCentiseconds
         self.updateTimeLabelCallback = callbackOnFire
@@ -51,6 +51,9 @@ class Stopwatch {
         updateTimeLabelCallback()
     }
     
+    func restore(backgoundTime timeValue: Int) {
+        centisecondsCounter += timeValue
+    }
     
     // MARK: - Private accessory methods
     
@@ -71,6 +74,7 @@ class Stopwatch {
         
         updateTimeLabelCallback()
     }
+    
     
     private func pause() {
         state = .paused
