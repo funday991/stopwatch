@@ -35,6 +35,10 @@ class ViewController: UIViewController {
         initializeStopwatch()
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     // MARK: - Private accessory methods
     
     private func setForegroundObserver() {
